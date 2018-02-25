@@ -9,21 +9,17 @@ import {
   ToastAndroid,
 } from 'react-native';
 
-import { YoutubePlayer } from './src/components/YoutubePlayer';
+import { WebViewPlayer } from './src/components/WebViewPlayer';
 
 // import HTMLView from 'react-native-htmlview';
 const siteUrl = 'https://litealloy.com/';
 // const siteUrl = 'http://10.0.2.2:3000/';
-const defaultWorkoutData = { name: '', instructions: '', youtubeId: 'qHuEd3KVAwk' };
+const defaultWorkoutData = { name: '', instructions: '', youtubeId: '' }; // qHuEd3KVAwk
 const api = require('./src/api.js');
 
 export default class App extends Component {
-  static getYoutubeKey() {
-    return api(siteUrl, 'youtube/key');
-  }
-
   static getWorkoutFromApi() {
-    return api(siteUrl, 'workouts/random');
+    return api('workouts/random');
   }
 
   static workoutState(data) {
@@ -39,19 +35,13 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = { workout: defaultWorkoutData, btnDisabled: false };
-    this.loadWorkout = this.loadWorkout.bind(this);
-    this.openLink = this.openLink.bind(this);
   }
 
   componentDidMount() {
-    this.constructor.getYoutubeKey().then((data) => {
-      this.constructor.getWorkoutFromApi().then((wData) => {
-        this.setState({ workout: this.constructor.workoutState(wData), youtubeKey: data.key });
-      });
-    });
+    this.loadWorkout();
   }
 
-  loadWorkout() {
+  loadWorkout = () => {
     this.setState({ btnDisabled: true });
     this.constructor.getWorkoutFromApi().then((data) => {
       this.setState({
@@ -61,10 +51,10 @@ export default class App extends Component {
     });
   }
 
-  openLink() {
+  openLink = () => {
     if (!this.state.workout.id) { return null; }
     const url = [siteUrl, 'workouts', this.state.workout.id].join('/');
-    return Linking.openURL(url).catch(err => ToastAndroid.show(`An error occurred${err}`, ToastAndroid.SHORT));
+    return Linking.openURL(url).catch(err => ToastAndroid.show(`An error has occurred - ${err}`, ToastAndroid.SHORT));
   }
 
   render() {
@@ -76,7 +66,7 @@ export default class App extends Component {
           </Text>
           <Text style={styles.instructions}>{this.state.workout.instructions}</Text>
 
-          <YoutubePlayer apiKey={this.state.youtubeKey} youtubeId={this.state.workout.youtubeId} />
+          <WebViewPlayer youtubeId={this.state.workout.youtubeId} />
 
           <Button
             title="another workout"

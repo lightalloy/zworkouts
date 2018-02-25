@@ -1,8 +1,8 @@
-import {
-  ToastAndroid,
-} from 'react-native';
+import { ToastAndroid } from 'react-native';
 
-module.exports = function api(siteUrl, path = 'workouts/random') {
+const siteUrl = 'https://litealloy.com/';
+
+module.exports = function api(path = 'workouts/random') {
   const url = [siteUrl, 'api/v1/', path, '.json'].join('');
   return fetch(url).then(response => response.json()).then(json => json)
     .catch(() => {
