@@ -101,8 +101,8 @@ android {
         applicationId "com.zworkouts"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "0.0.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -126,7 +126,11 @@ android {
         }
     }
     buildTypes {
+        debug {
+            manifestPlaceholders = [excludeSystemAlertWindowPermission: "false"]
+        }
         release {
+            manifestPlaceholders = [excludeSystemAlertWindowPermission: "true"]
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
