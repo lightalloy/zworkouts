@@ -1,6 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import {
   View,
+  AppState,
   WebView,
   StyleSheet,
   Platform,
@@ -8,17 +9,41 @@ import {
 
 import PropTypes from 'prop-types';
 
-export class WebViewPlayer extends PureComponent {
+export class WebViewPlayer extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { appState: AppState.currentState };
+  }
+
+  componentDidMount() {
+      AppState.addEventListener('change', this._handleAppStateChange);
+  }
+
+  componentWillUnmount() {
+      AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+      this.setState({appState: nextAppState});
+  }
+
   render() {
-    return (
-      <View style={{ height: 260 }}>
-        <WebView
-          style={styles.WebViewContainer}
-          javaScriptEnabled
-          domStorageEnabled
-          source={{ uri: `https://www.youtube.com/embed/${this.props.youtubeId}` }}
-        />
-      </View>);
+    if (this.state.appState == 'active') {
+      return (
+        <View style={{ height: 260 }}>
+          <WebView
+            style={styles.WebViewContainer}
+            javaScriptEnabled
+            domStorageEnabled
+            source={{ uri: `https://www.youtube.com/embed/${this.props.youtubeId}` }}
+          />
+        </View> );
+    }
+    else {
+      return <View style={{ height: 260 }}></View>;
+    }
+
   }
 }
 
