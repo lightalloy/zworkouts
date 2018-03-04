@@ -9,6 +9,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 
+import KeepAwake from 'react-native-keep-awake';
 import { WebViewPlayer } from './src/components/WebViewPlayer';
 
 // import HTMLView from 'react-native-htmlview';
@@ -60,6 +61,7 @@ export default class App extends Component {
   render() {
     return (
       <ScrollView>
+        <KeepAwake />
         <View style={styles.content}>
           <Text style={styles.header} onPress={this.openLink}>
             {this.state.workout.name}

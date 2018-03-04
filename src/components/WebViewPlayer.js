@@ -10,26 +10,25 @@ import {
 import PropTypes from 'prop-types';
 
 export class WebViewPlayer extends Component {
-
   constructor(props) {
     super(props);
     this.state = { appState: AppState.currentState };
   }
 
   componentDidMount() {
-      AppState.addEventListener('change', this._handleAppStateChange);
+    AppState.addEventListener('change', this.handleAppStateChange);
   }
 
   componentWillUnmount() {
-      AppState.removeEventListener('change', this._handleAppStateChange);
+    AppState.removeEventListener('change', this.handleAppStateChange);
   }
 
-  _handleAppStateChange = (nextAppState) => {
-      this.setState({appState: nextAppState});
+  handleAppStateChange = (nextAppState) => {
+    this.setState({ appState: nextAppState });
   }
 
   render() {
-    if (this.state.appState == 'active') {
+    if (this.state.appState === 'active') {
       return (
         <View style={{ height: 260 }}>
           <WebView
@@ -38,12 +37,10 @@ export class WebViewPlayer extends Component {
             domStorageEnabled
             source={{ uri: `https://www.youtube.com/embed/${this.props.youtubeId}` }}
           />
-        </View> );
-    }
-    else {
-      return <View style={{ height: 260 }}></View>;
+        </View>);
     }
 
+    return <View style={{ height: 260 }} />;
   }
 }
 
