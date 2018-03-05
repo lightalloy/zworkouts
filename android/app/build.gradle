@@ -101,7 +101,7 @@ android {
         applicationId "com.zworkouts"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 4
+        versionCode 5
         versionName "0.0.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
