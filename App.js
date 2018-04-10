@@ -11,18 +11,12 @@ import {
 
 import KeepAwake from 'react-native-keep-awake';
 import { WebViewPlayer } from './src/components/WebViewPlayer';
+import { api } from './src/api';
 
-// import HTMLView from 'react-native-htmlview';
 const siteUrl = 'https://litealloy.com/';
-// const siteUrl = 'http://10.0.2.2:3000/';
 const defaultWorkoutData = { name: '', instructions: '', youtubeId: '' }; // qHuEd3KVAwk
-const api = require('./src/api.js');
 
 export default class App extends Component {
-  static getWorkoutFromApi() {
-    return api('workouts/random');
-  }
-
   static workoutState(data) {
     const responseData = data || defaultWorkoutData;
     return {
@@ -33,22 +27,18 @@ export default class App extends Component {
     };
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { workout: defaultWorkoutData, btnDisabled: false };
-  }
+  state = { workout: defaultWorkoutData, btnDisabled: false };
 
   componentDidMount() {
     this.loadWorkout();
   }
 
-  loadWorkout = () => {
+  loadWorkout = async() => {
     this.setState({ btnDisabled: true });
-    this.constructor.getWorkoutFromApi().then((data) => {
-      this.setState({
-        workout: this.constructor.workoutState(data),
-        btnDisabled: false,
-      });
+    const data = await api('workouts/random');
+    this.setState({
+      workout: this.constructor.workoutState(data),
+      btnDisabled: false,
     });
   }
 

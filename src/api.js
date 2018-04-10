@@ -2,10 +2,16 @@ import { ToastAndroid } from 'react-native';
 
 const siteUrl = 'https://litealloy.com/';
 
-module.exports = function api(path = 'workouts/random') {
-  const url = [siteUrl, 'api/v1/', path, '.json'].join('');
-  return fetch(url).then(response => response.json()).then(json => json)
-    .catch(() => {
-      ToastAndroid.show("Sorry, couldn't get a proper workout", ToastAndroid.SHORT);
-    });
+export const api = async(path = 'workouts/random') => {
+  try {
+    const url = [siteUrl, 'api/v1/', path, '.json'].join('');
+    const response = await fetch(url);
+    const json = await response.json();
+    return json;
+  } catch (err) {
+    ToastAndroid.show("Sorry, couldn't get a proper workout", ToastAndroid.SHORT);
+    return {};
+  }
 };
+
+export default { api };

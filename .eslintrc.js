@@ -2,6 +2,7 @@ module.exports = {
     "extends": "airbnb",
     "rules": {
       "no-use-before-define": 0,
+      "space-before-function-paren": ["error", "never"],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
     },
     "env": {
